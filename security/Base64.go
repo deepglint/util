@@ -10,7 +10,9 @@ func EncodeBase64(src string) string {
 	return coder.EncodeToString([]byte(src))
 }
 
-func DecodeBase64(src string) string {
-	result, _ := coder.DecodeString(src)
-	return string(result)
+func DecodeBase64(src string) (result string, err error) {
+	var result_bytes []byte
+	result_bytes, err = coder.DecodeString(src)
+	result = string(result_bytes)
+	return
 }

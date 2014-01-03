@@ -3,51 +3,65 @@ package network
 import (
 	"github.com/liutong19890905/util/security"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strings"
 )
 
-func HttpGetSimpleRequest(url string) string {
-	defer func() {
-		if err := recover(); err != nil {
-			log.Println(err)
-		}
-	}()
+func HttpGetSimpleRequest(url string) (result string, err error) {
 	client := &http.Client{}
-	reqest, _ := http.NewRequest("GET", url, nil)
-	response, _ := client.Do(reqest)
+	reqest, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return
+	}
+	response, err := client.Do(reqest)
+	if err != nil {
+		return
+	}
 	defer response.Body.Close()
-	body, _ := ioutil.ReadAll(response.Body)
-	return string(body)
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return
+	}
+	result = string(body)
+	return
 }
 
-func HttpGetAuthRequest(url string, username string, password string) string {
-	defer func() {
-		if err := recover(); err != nil {
-			log.Println(err)
-		}
-	}()
+func HttpGetAuthRequest(url string, username string, password string) (result string, err error) {
 	client := &http.Client{}
-	reqest, _ := http.NewRequest("GET", url, nil)
+	reqest, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return
+	}
 	auth_str := username + ":" + password
 	reqest.Header.Add("Authorization", "Basic "+security.EncodeBase64(auth_str))
-	response, _ := client.Do(reqest)
+	response, err := client.Do(reqest)
+	if err != nil {
+		return
+	}
 	defer response.Body.Close()
-	body, _ := ioutil.ReadAll(response.Body)
-	return string(body)
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return
+	}
+	result = string(body)
+	return
 }
 
-func HttpPostSimpleRequest(url string, data string) string {
-	defer func() {
-		if err := recover(); err != nil {
-			log.Println(err)
-		}
-	}()
+func HttpPostSimpleRequest(url string, data string) (result string, err error) {
 	client := &http.Client{}
-	reqest, _ := http.NewRequest("POST", url, strings.NewReader(data))
-	response, _ := client.Do(reqest)
+	reqest, err := http.NewRequest("POST", url, strings.NewReader(data))
+	if err != nil {
+		return
+	}
+	response, err := client.Do(reqest)
+	if err != nil {
+		return
+	}
 	defer response.Body.Close()
-	body, _ := ioutil.ReadAll(response.Body)
-	return string(body)
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return
+	}
+	result = string(body)
+	return
 }
