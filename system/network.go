@@ -5,18 +5,19 @@ import (
 	"github.com/liutong19890905/util/io"
 	"regexp"
 	"strconv"
+	"time"
 )
 
-type NetworkInfoModel struct {
-	NICs map[string]NICModel
+type CurrentNetworkState struct {
+	NICs map[string]NIC
 }
 
-type NICModel struct {
-	Receive  ReceiveModel
-	Transmit TransmitModel
+type NIC struct {
+	Receive  Receive
+	Transmit Transmit
 }
 
-type ReceiveModel struct {
+type Receive struct {
 	Bytes      int
 	Packets    int
 	Errs       int
@@ -27,7 +28,7 @@ type ReceiveModel struct {
 	Multicast  int
 }
 
-type TransmitModel struct {
+type Transmit struct {
 	Bytes      int
 	Packets    int
 	Errs       int
@@ -38,20 +39,40 @@ type TransmitModel struct {
 	Compressed int
 }
 
-func GetCurrentNetworkInfo() (network_info NetworkInfoModel, err error) {
+type IntervalNetworkState struct {
+	ReceiveBytes  float64
+	TransmitBytes float64
+}
+
+func GetIntervalNetworkState(dev string, test_time int, data_file_path string) (result IntervalNetworkState, err error) {
+	network_info_before, err := GetCurrentNetworkState(data_file_path)
+	if err != nil {
+		return
+	}
+	timer := time.NewTimer(time.Duration(test_time) * time.Millisecond)
+	<-timer.C
+	network_info_after, err := GetCurrentNetworkState(data_file_path)
+	if err != nil {
+		return
+	}
+	result.ReceiveBytes = (float64(network_info_after.NICs[dev].Receive.Bytes) - float64(network_info_before.NICs[dev].Receive.Bytes)) / float64(test_time) * 1000.0
+	result.TransmitBytes = (float64(network_info_after.NICs[dev].Transmit.Bytes) - float64(network_info_before.NICs[dev].Transmit.Bytes)) / float64(test_time) * 1000.0
+	return
+}
+
+func GetCurrentNetworkState(data_file_path string) (network_info CurrentNetworkState, err error) {
 	var lines []string
-	lines, err = io.ReadLines("/proc/net/dev")
+	lines, err = io.ReadLines(data_file_path)
 	if err != nil {
 		return
 	}
 	reg := regexp.MustCompile(`[^ |^:]+`)
-	network_info.NICs = make(map[string]NICModel)
+	network_info.NICs = make(map[string]NIC)
 
 	for i := 2; i < len(lines); i++ {
 		infos := reg.FindAllString(lines[i], -1)
-		// fmt.Println(len(infos))
 		if len(infos) != 17 {
-			err = errors.New("There has something wrong with /proc/net/dev")
+			err = errors.New("There has something wrong with " + data_file_path)
 			return
 		}
 		var (
@@ -94,11 +115,11 @@ func GetCurrentNetworkInfo() (network_info NetworkInfoModel, err error) {
 		if err != nil {
 			return
 		}
-		receive := ReceiveModel{receive_bytes, receive_packets, receive_errs, receive_drop,
+		receive := Receive{receive_bytes, receive_packets, receive_errs, receive_drop,
 			receive_fifo, receive_frame, receive_compressed, receive_multicast}
-		transmit := TransmitModel{transmit_bytes, transmit_packets, transmit_errs,
+		transmit := Transmit{transmit_bytes, transmit_packets, transmit_errs,
 			transmit_drop, transmit_fifo, transmit_colls, transmit_carrier, transmit_compressed}
-		nic := NICModel{receive, transmit}
+		nic := NIC{receive, transmit}
 		network_info.NICs[infos[0]] = nic
 	}
 	return
