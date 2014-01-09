@@ -12,7 +12,7 @@ type Coretemp struct {
 	CritTemp int
 }
 
-func GetCurrentCoretemp(data_file_path []string) (result map[string]Coretemp, err error) {
+func GetCurrentCoretemps(data_file_path []string) (result map[string]Coretemp, err error) {
 	var lines []string
 	reg_content := regexp.MustCompile(`[0-9]+`)
 	reg_label := regexp.MustCompile(`[0-9|a-z|A-Z| ]+`)

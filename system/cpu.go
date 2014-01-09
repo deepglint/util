@@ -1,18 +1,11 @@
 package system
 
 import (
-	// "errors"
 	"github.com/liutong19890905/util/io"
 	"regexp"
 	"strconv"
-	// "time"
-	// "fmt"
 	"strings"
 )
-
-// type CurrentCPUState struct {
-// 	CPUs map[string]CPU
-// }
 
 type CPU struct {
 	User        int64
@@ -33,7 +26,7 @@ func (this *CPU) Total() int64 {
 		this.Irq + this.Softirq + this.Stealstolen + this.Guest_vm + this.Guest_lp
 }
 
-func GetCurrentCPUState(data_file_path string) (result map[string]CPU, err error) {
+func GetCurrentCPUs(data_file_path string) (result map[string]CPU, err error) {
 	var lines []string
 	lines, err = io.ReadLines(data_file_path)
 	if err != nil {
