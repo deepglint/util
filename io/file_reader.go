@@ -34,5 +34,6 @@ func ReadLines(path string) (lines []string, err error) {
 	if err == io.EOF {
 		err = nil
 	}
+	file.Close()
 	return
 }
