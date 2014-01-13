@@ -1,11 +1,11 @@
-package config
+package template
 
 import (
 	"os"
 	"text/template"
 )
 
-func SetTemplateConfig(template_path string, config_path string, e interface{}) (err error) {
+func SerializeToFile(template_path string, config_path string, e interface{}) (err error) {
 	config_file, err := os.Create(config_path)
 	if err != nil {
 		return

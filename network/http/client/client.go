@@ -1,4 +1,4 @@
-package network
+package client
 
 import (
 	"github.com/liutong19890905/util/security"
@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func HttpGetSimpleRequest(url string) (result string, err error) {
+func Get(url string) (result string, err error) {
 	client := &http.Client{}
 	reqest, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -26,7 +26,7 @@ func HttpGetSimpleRequest(url string) (result string, err error) {
 	return
 }
 
-func HttpGetAuthRequest(url string, username string, password string) (result string, err error) {
+func AuthGet(url string, username string, password string) (result string, err error) {
 	client := &http.Client{}
 	reqest, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func HttpGetAuthRequest(url string, username string, password string) (result st
 	return
 }
 
-func HttpPostSimpleRequest(url string, data string) (result string, err error) {
+func Post(url string, data string) (result string, err error) {
 	client := &http.Client{}
 	reqest, err := http.NewRequest("POST", url, strings.NewReader(data))
 	if err != nil {

@@ -1,7 +1,7 @@
-package system
+package monitor
 
 import (
-	"github.com/liutong19890905/util/io"
+	"github.com/liutong19890905/util/io/file"
 	"regexp"
 	"strconv"
 )
@@ -24,13 +24,13 @@ func GetCurrentCoretemps(data_file_path []string) (result map[string]Coretemp, e
 			crit_temp int
 			label     string
 		)
-		lines, err = io.ReadLines(data_file_path[i] + "_input")
+		lines, err = file.ReadLines(data_file_path[i] + "_input")
 		cur_temp, err = strconv.Atoi(reg_content.FindString(lines[0]))
-		lines, err = io.ReadLines(data_file_path[i] + "_max")
+		lines, err = file.ReadLines(data_file_path[i] + "_max")
 		max_temp, err = strconv.Atoi(reg_content.FindString(lines[0]))
-		lines, err = io.ReadLines(data_file_path[i] + "_crit")
+		lines, err = file.ReadLines(data_file_path[i] + "_crit")
 		crit_temp, err = strconv.Atoi(reg_content.FindString(lines[0]))
-		lines, err = io.ReadLines(data_file_path[i] + "_label")
+		lines, err = file.ReadLines(data_file_path[i] + "_label")
 		label = reg_label.FindString(lines[0])
 		if err != nil {
 			return

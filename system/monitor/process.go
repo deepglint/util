@@ -1,8 +1,7 @@
-package system
+package monitor
 
 import (
-	"bytes"
-	"os/exec"
+	"github.com/liutong19890905/util/system/exec"
 	"regexp"
 	"strconv"
 	"strings"
@@ -20,19 +19,13 @@ type Process struct {
 func GetCurrentProcesses(process_names map[string]int) (result map[string]Process, err error) {
 	reg_label := regexp.MustCompile(`[0-9|a-z|A-Z|.|/|-|:|\[|\]|_|+| ]+`)
 	result = make(map[string]Process)
-	cmd := exec.Command("ps", "aux")
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	err = cmd.Run()
+	var lines []string
+	lines, err = exec.Command("ps", "aux")
 	if err != nil {
 		return
 	}
-	for {
-		line, err := out.ReadString('\n')
-		if err != nil {
-			break
-		}
-		tokens := strings.Split(line, " ")
+	for i := 0; i < len(lines); i++ {
+		tokens := strings.Split(lines[i], " ")
 		ft := make([]string, 0)
 		for _, t := range tokens {
 			if t != "" && t != "\t" {

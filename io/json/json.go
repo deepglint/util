@@ -1,4 +1,4 @@
-package config
+package json
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func GetJsonConfigFromFile(config_path string, e interface{}) (err error) {
+func DeserializeFromFile(config_path string, e interface{}) (err error) {
 	config_file, _ := os.Open(config_path)
 	if err != nil {
 		return
@@ -15,7 +15,7 @@ func GetJsonConfigFromFile(config_path string, e interface{}) (err error) {
 	return decoder.Decode(e)
 }
 
-func GetJsonConfigFromString(json_string string, e interface{}) (err error) {
+func DeserializeFromString(json_string string, e interface{}) (err error) {
 	decoder := json.NewDecoder(strings.NewReader(json_string))
 	return decoder.Decode(e)
 }

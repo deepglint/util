@@ -1,8 +1,8 @@
-package system
+package monitor
 
 import (
 	"errors"
-	"github.com/liutong19890905/util/io"
+	"github.com/liutong19890905/util/io/file"
 	"regexp"
 	"strconv"
 	"strings"
@@ -39,7 +39,7 @@ type Transmit struct {
 
 func GetCurrentNIC(data_file_path string, dev string) (result NIC, err error) {
 	var lines []string
-	lines, err = io.ReadLines(data_file_path)
+	lines, err = file.ReadLines(data_file_path)
 	if err != nil {
 		return
 	}
