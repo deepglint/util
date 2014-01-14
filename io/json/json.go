@@ -19,3 +19,13 @@ func DeserializeFromString(json_string string, e interface{}) (err error) {
 	decoder := json.NewDecoder(strings.NewReader(json_string))
 	return decoder.Decode(e)
 }
+
+func SerializeFromString(e interface{}) (result string, err error) {
+	var result_bytes []byte
+	result_bytes, err = json.Marshal(e)
+	if err != nil {
+		return
+	}
+	result = string(result_bytes)
+	return
+}

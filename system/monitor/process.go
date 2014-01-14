@@ -17,7 +17,8 @@ type Process struct {
 }
 
 func GetCurrentProcesses(process_names map[string]int) (result map[string]Process, err error) {
-	reg_label := regexp.MustCompile(`[0-9|a-z|A-Z|.|/|-|:|\[|\]|_|+| ]+`)
+	reg_label := regexp.MustCompile(`[.|/|a-z|A-Z|0-9|_| |-]+`)
+	reg_time := regexp.MustCompile(`[a-z|A-Z|0-9|:|-]+`)
 	result = make(map[string]Process)
 	var lines []string
 	lines, err = exec.Command("ps", "aux")
@@ -57,8 +58,8 @@ func GetCurrentProcesses(process_names map[string]int) (result map[string]Proces
 		cpu, err = strconv.ParseFloat(ft[2], 64)
 		mem, err = strconv.ParseFloat(ft[3], 64)
 		rss, err = strconv.ParseUint(ft[5], 10, 64)
-		start = reg_label.FindString(ft[8])
-		time = reg_label.FindString(ft[9])
+		start = reg_time.FindString(ft[8])
+		time = reg_time.FindString(ft[9])
 		if err != nil {
 			continue
 		}

@@ -14,7 +14,9 @@ type USB struct {
 	Des    string
 }
 
-func GetCurrentUSB() (results []USB, err error) {
+func GetCurrentUSB() (results map[string]USB, err error) {
+	results = make(map[string]USB)
+	reg_label := regexp.MustCompile(`[0-9|a-z|A-Z|.|/|-|:|\[|\]|_|+| ]+`)
 	reg := regexp.MustCompile(`[^:]+`)
 	var lines []string
 	lines, err = exec.Command("lsusb")
@@ -46,12 +48,12 @@ func GetCurrentUSB() (results []USB, err error) {
 		des = tep_des
 		busnum, err = strconv.Atoi(ft[1])
 		devnum, err = strconv.Atoi(reg.FindString(ft[3]))
-		devid = ft[5]
+		devid = reg_label.FindString(ft[5])
 		if err != nil {
 			continue
 		}
 		usb := USB{busnum, devnum, devid, des}
-		results = append(results, usb)
+		results[devid] = usb
 	}
 	return
 }
