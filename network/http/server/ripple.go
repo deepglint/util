@@ -165,6 +165,9 @@ func (this *Application) ServeHTTP(writter http.ResponseWriter, request *http.Re
 	auth := request.Header.Get("Authorization")
 	if auth == "" {
 		writter.Header().Set("WWW-Authenticate", `Basic realm="User Login"`)
+		// writter.Header().Set("Access-Control-Allow-Origin", "*")
+		// writter.Header().Add("Access-Control-Allow-Headers", "Content-Type")
+		// writter.Header().Set("content-type", "application/json")
 		writter.WriteHeader(http.StatusUnauthorized)
 		return
 	}
