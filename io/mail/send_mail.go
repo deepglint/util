@@ -14,7 +14,7 @@ func encodeRFC2047(String string) string {
 }
 
 func SendMail(from_addr string, from_alias string, from_pwd string, from_smtp string,
-	to_addr string, to_alias string, title string, body string) (err error) {
+	to_labels []string, title string, body string) (err error) {
 	auth := smtp.PlainAuth(
 		"",
 		from_addr,
@@ -23,11 +23,22 @@ func SendMail(from_addr string, from_alias string, from_pwd string, from_smtp st
 	)
 
 	from := mail.Address{from_alias, from_addr}
-	to := mail.Address{to_alias, to_addr}
+	var tos []mail.Address
+	var toaddrs []string
 
 	header := make(map[string]string)
 	header["From"] = from.String()
-	header["To"] = to.String()
+	for i := 0; i < len(to_labels); i++ {
+		splits := strings.Split(to_labels[i], ":")
+		to := mail.Address{splits[1], splits[0]}
+		if strings.EqualFold(header["To"], "") {
+			header["To"] = to.String()
+		} else {
+			header["To"] = header["To"] + ";" + to.String()
+		}
+		tos = append(tos, to)
+		toaddrs = append(toaddrs, to.Address)
+	}
 	header["Subject"] = encodeRFC2047(title)
 	header["MIME-Version"] = "1.0"
 	header["Content-Type"] = "text/plain; charset=\"utf-8\""
@@ -43,7 +54,7 @@ func SendMail(from_addr string, from_alias string, from_pwd string, from_smtp st
 		from_smtp+":25",
 		auth,
 		from.Address,
-		[]string{to.Address},
+		toaddrs,
 		[]byte(message),
 	)
 	if err != nil {
