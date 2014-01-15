@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	"github.com/liutong19890905/util/io/file"
+	"deepglint/util/io/file"
 	"regexp"
 	"strconv"
 	"strings"

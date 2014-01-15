@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	"github.com/liutong19890905/util/system/exec"
+	"deepglint/util/system/exec"
 	"regexp"
 	"strconv"
 	"strings"
@@ -11,7 +11,7 @@ type Process struct {
 	PID   int
 	CPU   float64
 	MEM   float64
-	RSS   uint64
+	RSS   float64
 	Start string
 	Time  string
 }
@@ -38,7 +38,7 @@ func GetCurrentProcesses(process_names map[string]int) (result map[string]Proces
 			pid   int
 			cpu   float64
 			mem   float64
-			rss   uint64
+			rss   float64
 			start string
 			time  string
 		)
@@ -57,7 +57,7 @@ func GetCurrentProcesses(process_names map[string]int) (result map[string]Proces
 		pid, err = strconv.Atoi(ft[1])
 		cpu, err = strconv.ParseFloat(ft[2], 64)
 		mem, err = strconv.ParseFloat(ft[3], 64)
-		rss, err = strconv.ParseUint(ft[5], 10, 64)
+		rss, err = strconv.ParseFloat(ft[5], 64)
 		start = reg_time.FindString(ft[8])
 		time = reg_time.FindString(ft[9])
 		if err != nil {
