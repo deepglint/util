@@ -9,6 +9,10 @@ type Timer struct {
 	Interval int
 }
 
+func Now() time.Time {
+	return time.Now()
+}
+
 func NewTimer(interval int) Timer {
 	var timer Timer
 	timer.Interval = interval
