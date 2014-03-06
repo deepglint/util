@@ -3,13 +3,32 @@ package client
 import (
 	"deepglint/util/security"
 	"io/ioutil"
+	"net"
 	"net/http"
+	"net/url"
 	"strings"
+	"time"
 )
 
-func Get(url string) (result string, err error) {
-	client := &http.Client{}
-	reqest, err := http.NewRequest("GET", url, nil)
+const Timeout = 5
+
+func Get(url_addr string) (result string, err error) {
+	urler := url.URL{}
+	url_proxy, _ := urler.Parse(url_addr)
+	client := &http.Client{
+		Transport: &http.Transport{
+			Dial: func(netw, addr string) (net.Conn, error) {
+				c, err := net.DialTimeout(netw, addr, time.Second*Timeout)
+				if err != nil {
+					return nil, err
+				}
+				c.SetDeadline(time.Now().Add(10 * time.Second))
+				return c, nil
+			},
+			Proxy: http.ProxyURL(url_proxy),
+		},
+	}
+	reqest, err := http.NewRequest("GET", url_addr, nil)
 	if err != nil {
 		return
 	}
@@ -26,9 +45,23 @@ func Get(url string) (result string, err error) {
 	return
 }
 
-func AuthGet(url string, username string, password string) (result string, err error) {
-	client := &http.Client{}
-	reqest, err := http.NewRequest("GET", url, nil)
+func AuthGet(url_addr string, username string, password string) (result string, err error) {
+	urler := url.URL{}
+	url_proxy, _ := urler.Parse(url_addr)
+	client := &http.Client{
+		Transport: &http.Transport{
+			Dial: func(netw, addr string) (net.Conn, error) {
+				c, err := net.DialTimeout(netw, addr, time.Second*Timeout)
+				if err != nil {
+					return nil, err
+				}
+				c.SetDeadline(time.Now().Add(10 * time.Second))
+				return c, nil
+			},
+			Proxy: http.ProxyURL(url_proxy),
+		},
+	}
+	reqest, err := http.NewRequest("GET", url_addr, nil)
 	if err != nil {
 		return
 	}
@@ -47,9 +80,23 @@ func AuthGet(url string, username string, password string) (result string, err e
 	return
 }
 
-func AuthPost(url string, data string, username string, password string) (result string, err error) {
-	client := &http.Client{}
-	reqest, err := http.NewRequest("POST", url, strings.NewReader(data))
+func AuthPost(url_addr string, data string, username string, password string) (result string, err error) {
+	urler := url.URL{}
+	url_proxy, _ := urler.Parse(url_addr)
+	client := &http.Client{
+		Transport: &http.Transport{
+			Dial: func(netw, addr string) (net.Conn, error) {
+				c, err := net.DialTimeout(netw, addr, time.Second*Timeout)
+				if err != nil {
+					return nil, err
+				}
+				c.SetDeadline(time.Now().Add(10 * time.Second))
+				return c, nil
+			},
+			Proxy: http.ProxyURL(url_proxy),
+		},
+	}
+	reqest, err := http.NewRequest("POST", url_addr, strings.NewReader(data))
 	if err != nil {
 		return
 	}
@@ -68,9 +115,23 @@ func AuthPost(url string, data string, username string, password string) (result
 	return
 }
 
-func Post(url string, data string) (result string, err error) {
-	client := &http.Client{}
-	reqest, err := http.NewRequest("POST", url, strings.NewReader(data))
+func Post(url_addr string, data string) (result string, err error) {
+	urler := url.URL{}
+	url_proxy, _ := urler.Parse(url_addr)
+	client := &http.Client{
+		Transport: &http.Transport{
+			Dial: func(netw, addr string) (net.Conn, error) {
+				c, err := net.DialTimeout(netw, addr, time.Second*Timeout)
+				if err != nil {
+					return nil, err
+				}
+				c.SetDeadline(time.Now().Add(10 * time.Second))
+				return c, nil
+			},
+			Proxy: http.ProxyURL(url_proxy),
+		},
+	}
+	reqest, err := http.NewRequest("POST", url_addr, strings.NewReader(data))
 	if err != nil {
 		return
 	}

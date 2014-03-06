@@ -12,7 +12,9 @@ func DeserializeFromFile(config_path string, e interface{}) (err error) {
 		return
 	}
 	decoder := json.NewDecoder(config_file)
-	return decoder.Decode(e)
+	err = decoder.Decode(e)
+	config_file.Close()
+	return
 }
 
 func DeserializeFromString(json_string string, e interface{}) (err error) {
