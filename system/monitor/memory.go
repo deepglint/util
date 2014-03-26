@@ -1,8 +1,8 @@
 package monitor
 
 import (
-	"deepglint/util/io/file"
 	"errors"
+	"github.com/deepglint/util/io/file"
 	"regexp"
 	"strconv"
 )

@@ -1,7 +1,7 @@
 package client
 
 import (
-	"deepglint/util/security"
+	"github.com/deepglint/util/security"
 	"io/ioutil"
 	"net"
 	"net/http"

@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	"deepglint/util/system/exec"
+	"github.com/deepglint/util/system/exec"
 	"regexp"
 	"strconv"
 	"strings"
