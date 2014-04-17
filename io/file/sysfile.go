@@ -48,13 +48,13 @@ func (self *fs) visit(path string, f os.FileInfo, err error) error {
 	return nil
 }
 
-func Visit(root string) []*SysFile {
+func Visit(root string) (error, []*SysFile) {
 	self := fs{
 		files: make([]*SysFile, 0),
 	}
-	filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
+	err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
 		return self.visit(path, f, err)
 	})
 
-	return self.files
+	return err, self.files
 }
