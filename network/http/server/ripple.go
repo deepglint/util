@@ -6,11 +6,11 @@
 package server
 
 import (
-	"encoding/base64"
+	// "encoding/base64"
 	"encoding/json"
 	"image"
 	"image/jpeg"
-	"io"
+	// "io"
 	"log"
 	"net/http"
 	"net/url"
@@ -162,58 +162,58 @@ func (this *Application) prepareServeHttpResponseData(context *Context) serveHtt
 func (this *Application) ServeHTTP(writter http.ResponseWriter, request *http.Request) {
 	////////////////////////////////////////////
 
-	auth := request.Header.Get("Authorization")
-	if auth == "" {
-		writter.Header().Set("WWW-Authenticate", `Basic realm="User Login"`)
-		// writter.Header().Set("Access-Control-Allow-Origin", "*")
-		// writter.Header().Add("Access-Control-Allow-Headers", "Content-Type")
-		// writter.Header().Set("content-type", "application/json")
-		writter.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	log.Println(auth)
+	// auth := request.Header.Get("Authorization")
+	// if auth == "" {
+	// 	writter.Header().Set("WWW-Authenticate", `Basic realm="User Login"`)
+	// 	// writter.Header().Set("Access-Control-Allow-Origin", "*")
+	// 	// writter.Header().Add("Access-Control-Allow-Headers", "Content-Type")
+	// 	// writter.Header().Set("content-type", "application/json")
+	// 	writter.WriteHeader(http.StatusUnauthorized)
+	// 	return
+	// }
+	// log.Println(auth)
 
-	auths := strings.SplitN(auth, " ", 2)
-	if len(auths) != 2 {
-		log.Println("error")
-		return
-	}
+	// auths := strings.SplitN(auth, " ", 2)
+	// if len(auths) != 2 {
+	// 	log.Println("error")
+	// 	return
+	// }
 
-	authMethod := auths[0]
-	authB64 := auths[1]
+	// authMethod := auths[0]
+	// authB64 := auths[1]
 
-	switch authMethod {
-	case "Basic":
-		authstr, err := base64.StdEncoding.DecodeString(authB64)
-		if err != nil {
-			log.Println(err)
-			io.WriteString(writter, "Unauthorized!\n")
-			return
-		}
-		log.Println(string(authstr))
+	// switch authMethod {
+	// case "Basic":
+	// 	authstr, err := base64.StdEncoding.DecodeString(authB64)
+	// 	if err != nil {
+	// 		log.Println(err)
+	// 		io.WriteString(writter, "Unauthorized!\n")
+	// 		return
+	// 	}
+	// 	log.Println(string(authstr))
 
-		userPwd := strings.SplitN(string(authstr), ":", 2)
-		if len(userPwd) != 2 {
-			log.Println("error")
-			return
-		}
+	// 	userPwd := strings.SplitN(string(authstr), ":", 2)
+	// 	if len(userPwd) != 2 {
+	// 		log.Println("error")
+	// 		return
+	// 	}
 
-		username := userPwd[0]
-		password := userPwd[1]
+	// 	username := userPwd[0]
+	// 	password := userPwd[1]
 
-		log.Println("Username:", username)
-		log.Println("Password:", password)
+	// 	log.Println("Username:", username)
+	// 	log.Println("Password:", password)
 
-		if username != password {
-			writter.Header().Set("WWW-Authenticate", `Basic realm="User Login"`)
-			writter.WriteHeader(http.StatusUnauthorized)
-			return
-		}
+	// 	 if username != password {
+	// 	 	writter.Header().Set("WWW-Authenticate", `Basic realm="User Login"`)
+	// 	 	writter.WriteHeader(http.StatusUnauthorized)
+	// 	 	return
+	// 	 }
 
-	default:
-		log.Println("error")
-		return
-	}
+	// default:
+	// 	log.Println("error")
+	// 	return
+	// }
 
 	////////////////////////////////////////////
 	context := this.Dispatch(request)

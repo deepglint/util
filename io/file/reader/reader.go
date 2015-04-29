@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"bytes"
 	"io"
+	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -35,5 +37,22 @@ func ReadLines(path string) (lines []string, err error) {
 		err = nil
 	}
 	file.Close()
+	log.Println("...")
+	return
+}
+
+func ReadBytes(path string) (data []byte, size int, err error) {
+	var (
+		file   *os.File
+		part   []byte
+		prefix bool
+	)
+
+	if file, err = os.Open(path); err != nil {
+		return
+	}
+
+	data, err = ioutil.ReadAll(file)
+	size = len(data)
 	return
 }
