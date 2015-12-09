@@ -1,7 +1,9 @@
 package strtool
 
 import (
+	"bytes"
 	"crypto/md5"
+	"encoding/gob"
 	"fmt"
 	"strings"
 )
@@ -71,4 +73,14 @@ func SubstrLength(str string, start, length int) string {
 	}
 
 	return string(rs[start:end])
+}
+
+func GetBytes(key interface{}) ([]byte, error) {
+	var buf bytes.Buffer
+	enc := gob.NewEncoder(&buf)
+	err := enc.Encode(key)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
