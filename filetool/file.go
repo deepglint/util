@@ -1,8 +1,11 @@
 package filetool
 
 import (
+	"bufio"
+	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path"
@@ -11,6 +14,40 @@ import (
 
 	"github.com/deepglint/glog"
 )
+
+func ReadLines(path string) (lines []string, err error) {
+	var (
+		file   *os.File
+		part   []byte
+		prefix bool
+	)
+
+	if file, err = os.Open(path); err != nil {
+		return
+	}
+
+	reader := bufio.NewReader(file)
+	buffer := bytes.NewBuffer(make([]byte, 1024))
+	// Reset the buffer firstly, otherwise a lot of 0 will sit
+	// in the buffer!  Orz
+	buffer.Reset()
+
+	for {
+		if part, prefix, err = reader.ReadLine(); err != nil {
+			break
+		}
+		buffer.Write(part)
+		if !prefix {
+			lines = append(lines, buffer.String())
+			buffer.Reset()
+		}
+	}
+	if err == io.EOF {
+		err = nil
+	}
+	file.Close()
+	return
+}
 
 // SelfDir gets compiled executable file directory
 func SelfDir() string {

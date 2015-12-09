@@ -3,12 +3,13 @@ package collector
 import (
 	"bufio"
 	"bytes"
-	dgio "github.com/deepglint/muses/util/io"
 	"io"
 	"io/ioutil"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/deepglint/util/filetool"
 )
 
 type Memory struct {
@@ -34,7 +35,7 @@ var Multi uint64 = 1024
 
 func MemoryInfo() (result Memory, err error) {
 	var lines []string
-	lines, err = dgio.ReadLines("/proc/meminfo")
+	lines, err = filetool.ReadLines("/proc/meminfo")
 	if err != nil {
 		return
 	}
