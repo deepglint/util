@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/deepglint/glog"
-	"github.com/deepglint/muses/autobot/utils/filetool"
+	"github.com/deepglint/util/filetool"
 )
 
 /*
