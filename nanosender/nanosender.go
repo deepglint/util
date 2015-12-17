@@ -3,6 +3,7 @@ package nanosender
 import (
 	"errors"
 	"sync"
+	"time"
 
 	// "github.com/deepglint/glog"
 	"github.com/gdamore/mangos"
@@ -70,6 +71,17 @@ func (this *NanoSender) Send(data []byte) (err error) {
 }
 
 func (this *NanoSender) Recv() (body []byte, err error) {
+	body, err = this.Socket.Recv()
+	this.Mutex.Unlock()
+	// glog.Infoln(string(body))
+	return
+}
+
+func (this *NanoSender) RecvTimeout(o int) (body []byte, err error) {
+	timeout := time.Duration(o) * time.Second
+
+	this.Socket.SetOption(mangos.OptionRecvDeadline, timeout)
+
 	body, err = this.Socket.Recv()
 	this.Mutex.Unlock()
 	// glog.Infoln(string(body))

@@ -140,20 +140,26 @@ func UncompressTargz(file, path string) (err error) {
 
 		curfile := filepath.Join(path + string(os.PathSeparator) + hdr.Name)
 
-		// if filetool.IsFile(curfile) {
-		fw, err := os.OpenFile(curfile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, hdr.FileInfo().Mode())
+		glog.Infoln(curfile)
+		err = filetool.InsureDir(curfile)
 		if err != nil {
-			glog.Infoln(err)
+			glog.Errorln(err)
 			return err
 		}
-		defer fw.Close()
+		if filetool.IsFile(curfile) {
+			fw, err := os.OpenFile(curfile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, hdr.FileInfo().Mode())
+			if err != nil {
+				glog.Infoln(err)
+				return err
+			}
+			defer fw.Close()
 
-		_, err = io.Copy(fw, tr)
-		if err != nil {
-			glog.Infoln(err)
-			return err
+			_, err = io.Copy(fw, tr)
+			if err != nil {
+				glog.Infoln(err)
+				return err
+			}
 		}
-		// }
 	}
 	return nil
 }
