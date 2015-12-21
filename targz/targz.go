@@ -130,7 +130,6 @@ func UncompressTargz(file, path string) (err error) {
 		}
 
 		hdr_path := filepath.Dir(hdr.Name)
-		// glog.Infoln (hdr_path)
 
 		err = filetool.CreateDirRecursively(filepath.Join(path, hdr_path), os.FileMode(0777))
 		if err != nil {
@@ -139,14 +138,10 @@ func UncompressTargz(file, path string) (err error) {
 		}
 
 		curfile := filepath.Join(path + string(os.PathSeparator) + hdr.Name)
+		// glog.Infoln(curfile)
 
-		glog.Infoln(curfile)
-		err = filetool.InsureDir(curfile)
-		if err != nil {
-			glog.Errorln(err)
-			return err
-		}
-		if filetool.IsFile(curfile) {
+		curFileMode, err := os.Stat(curfile)
+		if os.IsNotExist(err) {
 			fw, err := os.OpenFile(curfile, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, hdr.FileInfo().Mode())
 			if err != nil {
 				glog.Infoln(err)
@@ -159,7 +154,15 @@ func UncompressTargz(file, path string) (err error) {
 				glog.Infoln(err)
 				return err
 			}
+		} else {
+			if curFileMode.IsDir() {
+				continue
+			}
 		}
+
+		// if filetool.IsFile(curfile) {
+
+		// }
 	}
 	return nil
 }
