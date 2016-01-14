@@ -4,7 +4,10 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
+	"strconv"
+	"strings"
 	"time"
 
 	log "github.com/deepglint/util/logtool"
@@ -66,4 +69,26 @@ func CmdRunWithTimeout(timeout time.Duration, name string, arg ...string) (strin
 	case err = <-done:
 		return out.String(), err, false
 	}
+}
+
+func GetPIDFromName(name string) (pid int, err error) {
+	head := name[:1]
+	body := name[1:]
+	cmd := fmt.Sprintf("ps -ef | awk '/[%s]%s/{print $2}'", head, body)
+	log.Info(cmd)
+	out, err := CmdOutNoLn(cmd)
+	if err != nil {
+		return
+	}
+	pid, err = strconv.Atoi(strings.TrimSpace(out))
+	return
+}
+
+func KillProcessByPID(pid int) (err error) {
+	process, err := os.FindProcess(pid)
+	if err != nil {
+		return
+	}
+	err = process.Kill()
+	return
 }
