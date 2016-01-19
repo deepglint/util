@@ -31,6 +31,7 @@ func NewNanoSender(url string) (*NanoSender, error) {
 	if sock, err = req.NewSocket(); err != nil {
 		return nil, ERROR_SOCKET
 	}
+	sock.SetOption(mangos.OptionRetryTime, 0)
 	sock.AddTransport(ipc.NewTransport())
 	// sock.AddTransport(tcp.NewTransport())
 
