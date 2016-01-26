@@ -38,7 +38,10 @@ func GetDNS() ([]string, error) {
 			continue
 		}
 
-		nameservers = append(nameservers, fields[1])
+		subfields := strings.Split(fields[1], ",")
+		for _, subfield := range subfields {
+			nameservers = append(nameservers, subfield)
+		}
 	}
 	return nameservers, nil
 }

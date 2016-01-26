@@ -49,8 +49,13 @@ func FormatUglyFile2INI(sourceFile, targetFile string) (err error) {
 		case 0:
 			continue
 		case 1:
-			lineIni = fmt.Sprintf("%s\n", fields[0])
-			targetBuf.WriteString(lineIni)
+			if strings.HasPrefix(fields[0], "[") {
+				lineIni = fmt.Sprintf("%s\n", fields[0])
+				targetBuf.WriteString(lineIni)
+			} else {
+				lineIni = fmt.Sprintf("%s=\n", fields[0])
+				targetBuf.WriteString(lineIni)
+			}
 		case 2:
 			lineIni = fmt.Sprintf("%s = %s\n", fields[0], fields[1])
 			targetBuf.WriteString(lineIni)
