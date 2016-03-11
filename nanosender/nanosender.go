@@ -19,6 +19,18 @@ var (
 	ERROR_LISTEN = errors.New("can not create ipc listener")
 )
 
+type NanoRequest struct {
+	SessionId string
+	Cmd       string
+	Params    map[string]interface{}
+}
+
+type NanoResponse struct {
+	SessionId string
+	Status    int
+	Body      interface{}
+}
+
 type NanoSender struct {
 	Mutex  *sync.Mutex
 	Socket mangos.Socket
@@ -87,6 +99,10 @@ func (this *NanoSender) RecvTimeout(o int) (body []byte, err error) {
 	this.Mutex.Unlock()
 	// glog.Infoln(string(body))
 	return
+}
+
+func (this *NanoSender) Close() error {
+	return this.Socket.Close()
 }
 
 /*

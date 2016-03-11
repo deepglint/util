@@ -44,13 +44,13 @@ func ListSupervisorProcess(client supervisor.Client) (pids []int, err error) {
 
 func StopSupervisor() (err error) {
 	//
-	_, err = systool.CmdOut("/usr/bin/sudo", "/usr/bin/killall", "supervisord")
+	_, err = systool.CmdOut("/usr/bin/sudo", "/usr/bin/killall", "/usr/bin/python")
 
 	return
 }
 
 func StartSupervisor() (err error) {
-	_, err = systool.CmdOut("/usr/bin/sudo", "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf")
+	_, err = systool.CmdOut("/usr/bin/sudo", "/usr/bin/python", "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf")
 
 	return
 }
