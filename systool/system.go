@@ -197,3 +197,13 @@ func is_intranet(ipStr string) bool {
 
 	return false
 }
+
+const (
+	REBOOT_STATUS = 741
+)
+
+func Reboot(sleep int) {
+	time.Sleep(time.Duration(sleep) * time.Second)
+
+	CmdOut("/usr/bin/sudo", "/sbin/reboot")
+}

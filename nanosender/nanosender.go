@@ -63,6 +63,10 @@ func NewNanoPairSocket(url string) (*NanoSender, error) {
 	if sock, err = pair.NewSocket(); err != nil {
 		return nil, ERROR_SOCKET
 	}
+
+	sock.SetOption(mangos.OptionRetryTime, 0)
+	sock.SetOption(mangos.OptionSendDeadline, time.Duration(1)*time.Second)
+	sock.SetOption(mangos.OptionRecvDeadline, time.Duration(1)*time.Second)
 	sock.AddTransport(ipc.NewTransport())
 	// sock.AddTransport(tcp.NewTransport())
 
