@@ -44,6 +44,7 @@ func NewNanoSender(url string) (*NanoSender, error) {
 		return nil, ERROR_SOCKET
 	}
 	sock.SetOption(mangos.OptionRetryTime, 0)
+	sock.SetOption(mangos.OptionSendDeadline, time.Duration(1)*time.Second)
 	sock.AddTransport(ipc.NewTransport())
 	// sock.AddTransport(tcp.NewTransport())
 
@@ -95,9 +96,9 @@ func (this *NanoSender) Recv() (body []byte, err error) {
 }
 
 func (this *NanoSender) RecvTimeout(o int) (body []byte, err error) {
-	timeout := time.Duration(o) * time.Second
+	// timeout := time.Duration(o) * time.Second
 
-	this.Socket.SetOption(mangos.OptionRecvDeadline, timeout)
+	// this.Socket.SetOption(mangos.OptionRecvDeadline, timeout)
 
 	body, err = this.Socket.Recv()
 	this.Mutex.Unlock()
