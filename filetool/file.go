@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"sort"
 
-	"github.com/deepglint/glog"
+	"github.com/golang/glog"
 )
 
 func ReadLines(path string) (lines []string, err error) {

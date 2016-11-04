@@ -3,10 +3,10 @@ package supervisortool
 import (
 	"errors"
 
-	"github.com/deepglint/glog"
 	"github.com/deepglint/go-supervisor/supervisor"
 	"github.com/deepglint/util/process"
 	"github.com/deepglint/util/systool"
+	"github.com/golang/glog"
 )
 
 func ListSupervisorProcess(client supervisor.Client) (pids []int, err error) {

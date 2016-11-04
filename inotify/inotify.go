@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/deepglint/glog"
 	"github.com/deepglint/util/filetool"
+	"github.com/golang/glog"
 	"github.com/howeyc/fsnotify"
 )
 

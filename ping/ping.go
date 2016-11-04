@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/deepglint/glog"
+	"github.com/golang/glog"
 )
 
 const (

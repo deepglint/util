@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	// "github.com/deepglint/glog"
+	// "github.com/golang/glog"
 	"github.com/gdamore/mangos"
 	"github.com/gdamore/mangos/protocol/pair"
 	"github.com/gdamore/mangos/protocol/req"

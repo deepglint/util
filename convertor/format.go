@@ -10,8 +10,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/deepglint/glog"
 	"github.com/deepglint/util/filetool"
+	"github.com/golang/glog"
 )
 
 func FormatUglyFile2INI(sourceFile, targetFile string) (err error) {

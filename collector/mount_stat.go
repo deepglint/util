@@ -3,7 +3,7 @@ package collector
 import (
 	"strings"
 
-	// "github.com/deepglint/glog"
+	// "github.com/golang/glog"
 	"github.com/deepglint/util/filetool"
 	"github.com/deepglint/util/system/exec"
 )

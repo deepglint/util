@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/bitly/go-nsq"
-	"github.com/deepglint/glog"
+	"github.com/golang/glog"
 )
 
 const (

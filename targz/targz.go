@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/deepglint/glog"
 	"github.com/deepglint/util/filetool"
+	"github.com/golang/glog"
 )
 
 /*
