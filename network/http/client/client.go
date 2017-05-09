@@ -1,7 +1,9 @@
 package client
 
 import (
+	"bytes"
 	"github.com/deepglint/util/security"
+	"io"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -37,11 +39,19 @@ func Get(url_addr string) (result string, err error) {
 		return
 	}
 	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+
+	buf := new(bytes.Buffer)
+	_, err = io.Copy(buf, response.Body)
 	if err != nil {
 		return
 	}
-	result = string(body)
+	result = buf.String()
+
+	// body, err := ioutil.ReadAll(response.Body)
+	// if err != nil {
+	// return
+	// }
+	// result = string(body)
 	return
 }
 

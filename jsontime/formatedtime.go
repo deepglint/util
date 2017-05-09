@@ -52,9 +52,13 @@ func Parse(timestr string) (*time.Time, error) {
 									const longForm = "2006-01-02T15:04:05ZMST"
 									thetime, err = time.Parse(longForm, timestr)
 									if err != nil {
-										thetime, err = time.Parse(time.UnixDate, timestr)
+										const longForm = "2006-01-12 15:04:05"
+										thetime, err = time.Parse(longForm, timestr)
 										if err != nil {
-											return nil, fmt.Errorf("time format error")
+											thetime, err = time.Parse(time.UnixDate, timestr)
+											if err != nil {
+												return nil, fmt.Errorf("time format error")
+											}
 										}
 									}
 								}
@@ -63,7 +67,6 @@ func Parse(timestr string) (*time.Time, error) {
 					}
 				}
 			}
-
 		}
 	} else {
 		//use unix time
